@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
-import { connectToDB } from "@/libs/mongodb"; // Assuming this path is correct
+import { connectToDB } from "@/libs/mongodb"; 
 
 export async function POST(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = context.params; // Destructure the ID from params
+  const { id } = params; 
 
   if (!ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
