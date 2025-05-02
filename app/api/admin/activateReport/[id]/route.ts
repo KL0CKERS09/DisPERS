@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { connectToDB } from "@/libs/mongodb"; 
 
 export async function POST(
   request: Request,
+  // @ts-ignore  
   { params }: { params: { id: string } }
 ) {
   const { id } = params; 
