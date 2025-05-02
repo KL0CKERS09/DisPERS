@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import style from './styles/alert.module.scss';
+import AddAlertForm from './component/addAlertForm';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 interface Alert {
@@ -16,14 +17,7 @@ interface Alert {
   createdAt?: string;
 }
 
-
-interface AddAlertFormProps {
-  onClose: () => void;
-  onSuccess: () => void;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const AddAlertForm: React.FC<AddAlertFormProps> = ({ onClose, onSuccess }) => {
+export default function AlertsPage() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [expanded, setExpanded] = useState(false);
   const [modalMode, setModalMode] = useState<'view' | 'edit' | null>(null);
@@ -306,13 +300,12 @@ const AddAlertForm: React.FC<AddAlertFormProps> = ({ onClose, onSuccess }) => {
         <div className="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center z-1050 px-4">
           <div className="bg-white rounded-xl w-full max-w-[50em] p-6 space-y-4">
             <button className="ml-auto text-gray-500 hover:text-gray-800" onClick={() => setAddModalOpen(false)}>✕</button>
-
             <AddAlertForm
               onClose={() => setAddModalOpen(false)}
               onSuccess={() => {
                 fetch('/api/alerts')
-                  .then(res => res.json())
-                  .then(data => setAlerts(data.alerts));
+                  .then((res) => res.json())
+                  .then((data) => setAlerts(data.alerts));
               }}
             />
           </div>
@@ -320,7 +313,5 @@ const AddAlertForm: React.FC<AddAlertFormProps> = ({ onClose, onSuccess }) => {
       )}
     </section>
   );
+}
 
-};
-
-export default AddAlertForm;

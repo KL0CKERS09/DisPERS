@@ -25,6 +25,8 @@ const defaultProfilePicture = "/defaultProfile.png"; // Default image URL
 const ManagementTable: React.FC = () => {
   const [data, setData] = useState<Entry[]>([]);
   const [selectedEntry, setSelectedEntry] = useState<Entry | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [filteredData, setFilteredData] = useState<Entry[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,12 +35,28 @@ const ManagementTable: React.FC = () => {
         const json = await res.json();
         console.log(json);
         setData(json);
+        setFilteredData(json); // Initialize with all data
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // Filter data based on search term
+    if (searchTerm) {
+      setFilteredData(
+        data.filter(entry =>
+          `${entry.firstName} ${entry.lastName}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredData(data); // Reset to all data when search term is empty
+    }
+  }, [searchTerm, data]);
 
   const getStatusBadge = (status: string) => {
     const baseClasses = 'px-2 py-0.5 rounded text-xs font-semibold';
@@ -59,7 +77,23 @@ const ManagementTable: React.FC = () => {
   };
 
   return (
-    <div className="overflow-x-auto p-4 bg-white rounded-md shadow-md">
+    <div className="w-[80%] mx-auto overflow-x-auto p-4 bg-white rounded-md shadow-md mt-20">
+      <div className="mb-4 flex justify-between items-center">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search by Name"
+          className="border p-2 rounded-md w-64"
+        />
+        <button
+          onClick={() => setSearchTerm('')} // Reset search term
+          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+        >
+          Clear Search
+        </button>
+      </div>
+      
       <table className="min-w-full border-collapse border border-gray-300 bg-white rounded-md">
         <thead>
           <tr className="bg-gray-100 text-gray-700 font-semibold">
@@ -72,7 +106,7 @@ const ManagementTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((entry, index) => (
+          {filteredData.map((entry, index) => (
             <tr key={entry._id} className={`border-b ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
               <td className="border px-4 py-2">{index + 1}</td>
               <td className="border px-4 py-2">{entry.firstName} {entry.lastName}</td>

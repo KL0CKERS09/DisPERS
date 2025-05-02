@@ -3,8 +3,12 @@
 
 import React, { useState } from 'react';
 
-// remove Props here since it's not a modal anymore
-export default function AddAlertForm() {
+interface AddAlertFormProps {
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export default function AddAlertForm({ onClose, onSuccess }: AddAlertFormProps) {
   const [newAlert, setNewAlert] = useState({
     title: '',
     description: '',
@@ -38,6 +42,7 @@ export default function AddAlertForm() {
     });
     if (res.ok) {
       alert('Alert created successfully!');
+      onSuccess(); // Trigger onSuccess callback when alert is created
     } else {
       alert('Failed to create alert.');
     }
@@ -50,16 +55,44 @@ export default function AddAlertForm() {
       <div className="flex flex-col md:flex-row gap-6">
         {/* Left Column */}
         <div className="w-[30em] flex flex-col gap-5">
-          <input name="title" onChange={handleChange} required className="w-full border p-2 rounded" placeholder="Title" />
-          <textarea name="description" onChange={handleChange} required className="w-full border p-2 rounded" placeholder="Description" />
-          <input name="location" onChange={handleChange} required className="w-full border p-2 rounded" placeholder="Location" />
-          <select name="severity" value={newAlert.severity} onChange={handleChange} className="w-full border p-2 rounded">
+          <input 
+            name="title" 
+            onChange={handleChange} 
+            required 
+            className="w-full border p-2 rounded" 
+            placeholder="Title" 
+          />
+          <textarea 
+            name="description" 
+            onChange={handleChange} 
+            required 
+            className="w-full border p-2 rounded" 
+            placeholder="Description" 
+          />
+          <input 
+            name="location" 
+            onChange={handleChange} 
+            required 
+            className="w-full border p-2 rounded" 
+            placeholder="Location" 
+          />
+          <select 
+            name="severity" 
+            value={newAlert.severity} 
+            onChange={handleChange} 
+            className="w-full border p-2 rounded"
+          >
             <option value="" disabled>Severity</option>
             <option value="High">High</option>
             <option value="Moderate">Moderate</option>
             <option value="Low">Low</option>
           </select>
-          <select name="status" value={newAlert.status} onChange={handleChange} className="w-full border p-2 rounded">
+          <select 
+            name="status" 
+            value={newAlert.status} 
+            onChange={handleChange} 
+            className="w-full border p-2 rounded"
+          >
             <option value="active">Active</option>
             <option value="resolved">Resolved</option>
           </select>
@@ -68,7 +101,13 @@ export default function AddAlertForm() {
         {/* Right Column */}
         <div className="w-[20em] flex flex-col items-center justify-between gap-4">
           <div className="w-full">
-            <input type="file" id="imageUpload" accept="image/*" onChange={handleImageUpload} className="hidden" />
+            <input 
+              type="file" 
+              id="imageUpload" 
+              accept="image/*" 
+              onChange={handleImageUpload} 
+              className="hidden" 
+            />
             <label htmlFor="imageUpload" className="w-full cursor-pointer">
               <div className="border-2 border-dashed border-gray-400 rounded-md w-full h-48 flex items-center justify-center overflow-hidden bg-gray-50 hover:bg-gray-100">
                 {newAlert.img ? (
@@ -80,8 +119,19 @@ export default function AddAlertForm() {
             </label>
           </div>
 
-          <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full">
+          <button 
+            type="submit" 
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full"
+          >
             Submit Alert
+          </button>
+
+          <button 
+            type="button" 
+            onClick={onClose} 
+            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 w-full mt-2"
+          >
+            Cancel
           </button>
         </div>
       </div>
