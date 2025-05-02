@@ -1,34 +1,27 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
 import { connectToDB } from '@/libs/mongodb';
 
-export async function POST(
-  request: Request,
-  context: { params: { id: string } }
-) {
-  const { id } = context.params; // Destructuring params
-
-  // Validate the ID format
-  if (!ObjectId.isValid(id)) {
-    return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
-  }
-
+export async function POST(req: NextRequest) {
   try {
-    // Connect to DB
+    const url = new URL(req.url);
+    const id = url.pathname.split('/').pop();
+
+    if (!id || !ObjectId.isValid(id)) {
+      return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
+    }
+
     const { db } = await connectToDB();
 
-    // Perform the update
     const result = await db.collection('anonymousReport').updateOne(
       { _id: new ObjectId(id) },
-      { $set: { status: 'Resolved' } } // Update status to 'Resolved'
+      { $set: { status: 'Resolved' } }
     );
 
-    // If no matching report found
     if (result.matchedCount === 0) {
       return NextResponse.json({ error: 'Report not found' }, { status: 404 });
     }
 
-    // Successfully updated
     return NextResponse.json({ message: 'Report verified successfully' });
   } catch (error) {
     console.error('Verification error:', error);
