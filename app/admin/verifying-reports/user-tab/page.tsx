@@ -195,7 +195,7 @@ export default function UserTab() {
                       src={selectedReport.image}
                       alt="Report"
                       className="w-64 max-h-full object-cover rounded border cursor-zoom-in hover:opacity-80 transition"
-                      onClick={() => setZoomImage(selectedReport.image)}
+                      onClick={() => setZoomImage(selectedReport.image ?? null)}
                     />
                   </div>
                 )}
