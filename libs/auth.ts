@@ -1,32 +1,17 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+// libs/auth.ts
+import { NextRequest } from 'next/server';
 import jwt from 'jsonwebtoken';
 
-export interface AuthenticatedRequest extends NextApiRequest {
-  userId?: string;
-}
+export async function authenticate(req: NextRequest) {
+  // Assume the JWT token is passed via the Authorization header
+  const token = req.headers.get('Authorization')?.split(' ')[1]; // 'Bearer <token>'
 
-export function authenticate(
-  req: AuthenticatedRequest,
-  res: NextApiResponse,
-  next: () => void // Explicitly define the type of next function
-) {
-  // Extract token from cookies
-  const token = req.cookies.authToken;
-
-  if (!token) {
-    return res.status(401).json({ message: 'Unauthorized' });
-  }
+  if (!token) return null;
 
   try {
-    // Verify the token and attach userId to the request
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
-    req.userId = (decoded as { userId: string }).userId;
-    
-    // Proceed to the next middleware/handler
-    next();
-  } catch (error) {
-    // Handle any errors during token verification
-    console.error('JWT Error:', error); // Log the error for debugging
-    return res.status(401).json({ message: 'Invalid token' });
+    return decoded.userId; // Assuming userId is stored in the JWT
+  } catch (err) {
+    return null;
   }
 }
