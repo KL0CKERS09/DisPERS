@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import Link from "next/link";
 import UserCard from "./current-user/page";
 import UserAlert from "./user-home/user-alert/page";
 import UserSubmitReport from "./user-home/user-submit-report/page";

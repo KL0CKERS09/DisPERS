@@ -1,5 +1,6 @@
 import { IoClose } from "react-icons/io5";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function AnnouncementModal({ announcement, onClose }: any) {
     return (
         <div className="fixed inset-0 bg-black/30 bg-opacity-40 flex items-center justify-center z-50">

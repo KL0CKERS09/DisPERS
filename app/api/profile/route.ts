@@ -21,8 +21,10 @@ export async function GET() {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userProfile } = user; 
     return NextResponse.json(userProfile);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json({ message: 'Invalid token', error: error.message }, { status: 403 });
   }
@@ -49,8 +51,10 @@ export async function PUT(req: Request) {
     );
 
     const updatedUser = await db.collection('users').findOne({ _id: new ObjectId(decoded.userId) });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userProfile } = updatedUser || {};
     return NextResponse.json(userProfile);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json({ message: 'Error updating profile', error: error.message }, { status: 500 });
   }

@@ -4,8 +4,9 @@ import jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
 
-export async function POST(req) {
-  const token = cookies().get('authToken')?.value;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function POST(req: { json: () => PromiseLike<{ profilePicture: any; }> | { profilePicture: any; }; }) {
+  const token = (await cookies()).get('authToken')?.value;
   if (!token) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
   try {
@@ -20,6 +21,7 @@ export async function POST(req) {
 
     const updatedUser = await db.collection('users').findOne({ _id: new ObjectId(decoded.userId) });
     return NextResponse.json(updatedUser);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return NextResponse.json({ message: 'Error uploading picture' }, { status: 500 });
   }

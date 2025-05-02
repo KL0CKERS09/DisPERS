@@ -20,6 +20,7 @@ export default function Profile() {
   const [originalUser, setOriginalUser] = useState<UserProfile | null>(null);
   const [editing, setEditing] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [formErrors, setFormErrors] = useState<any>({});
   const [tab, setTab] = useState<"info" | "password">("info");
 
@@ -99,6 +100,7 @@ export default function Profile() {
         setPasswordChangeError("Current password is incorrect.");
         return;
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setPasswordChangeError("Error verifying current password. Please try again.");
       return;
@@ -111,12 +113,14 @@ export default function Profile() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setPasswordChangeError("Error changing password. Please try again.");
     }
   };
 
   const validateForm = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors: any = {};
     if (!user?.firstName) errors.firstName = "First name is required.";
     if (!user?.lastName) errors.lastName = "Last name is required.";
@@ -210,6 +214,7 @@ export default function Profile() {
                     </label>
                     <input
                       name={field}
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       value={(user as any)[field]}
                       onChange={handleChange}
                       className={`w-full border p-2 rounded ${editing ? "bg-white" : "bg-gray-100"}`}

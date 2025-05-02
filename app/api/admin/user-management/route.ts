@@ -2,7 +2,6 @@
 
 import { NextResponse } from 'next/server';
 import { connectToDB } from '@/libs/mongodb';
-import { ObjectId } from 'mongodb';
 
 export async function GET() {
   try {

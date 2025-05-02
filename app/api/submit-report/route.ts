@@ -40,6 +40,7 @@ export async function POST(req: Request) {
     return result.insertedId
       ? NextResponse.json({ message: 'Report submitted successfully!' }, { status: 201 })
       : NextResponse.json({ message: 'Failed to submit report' }, { status: 400 });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return NextResponse.json({ message: 'Invalid token or error in submission' }, { status: 403 });
   }
@@ -63,7 +64,8 @@ export async function GET() {
       .sort({ createdAt: -1 })
       .toArray();
 
-    const formattedReports = reports.map((report) => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const formattedReports = reports.map((report: { _id: { toString: () => any; }; title: any; description: any; category: any; location: any; verified: any; status: any; createdAt: any; image: any; }) => ({
       id: report._id.toString(),
       title: report.title,
       description: report.description,
@@ -76,6 +78,7 @@ export async function GET() {
     }));
 
     return NextResponse.json({ reports: formattedReports });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return NextResponse.json({ message: 'Error fetching reports' }, { status: 500 });
   }

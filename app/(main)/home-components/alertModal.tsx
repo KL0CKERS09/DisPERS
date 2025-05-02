@@ -6,6 +6,7 @@ import Image from 'next/image';
 interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   alert: any;
 }
 

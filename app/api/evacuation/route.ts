@@ -45,6 +45,7 @@ export async function POST(request: Request) {
       });
   
       // Insert evacuations
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const insertedEvacuations = await Evacuation.insertMany(evacuationsToInsert);
   
       return NextResponse.json(

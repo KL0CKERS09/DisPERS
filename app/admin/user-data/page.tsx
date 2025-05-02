@@ -41,7 +41,7 @@ const ManagementTable: React.FC = () => {
   }, []);
 
   const getStatusBadge = (status: string) => {
-    let baseClasses = 'px-2 py-0.5 rounded text-xs font-semibold';
+    const baseClasses = 'px-2 py-0.5 rounded text-xs font-semibold';
     switch (status) {
       case 'pending':
         return <span className={`${baseClasses} bg-gray-300 text-gray-700`}>pending</span>;

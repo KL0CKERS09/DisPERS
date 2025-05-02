@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 
 type UserProfile = {
@@ -53,10 +52,8 @@ export default function ProfilePage() {
                 <img
                   src={user.profilePicture}
                   alt="Profile Picture"
-                  fill
                   sizes="64px"
                   className="object-cover"
-                  unoptimized
                 />
               ) : (
                 <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm">

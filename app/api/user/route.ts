@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request) {
+export async function GET() {
   const cookieStore = cookies();
   const token = (await cookieStore).get('authToken')?.value;
 

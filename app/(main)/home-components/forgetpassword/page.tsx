@@ -3,7 +3,6 @@ import { useState } from "react";
 import { FaKey, FaLock, FaUser, FaArrowLeft } from "react-icons/fa";
 import style from "@/styles/login.module.scss";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function ForgotPassword() {
   const [step, setStep] = useState(1);
