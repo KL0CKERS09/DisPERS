@@ -2,17 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { connectToDB } from "@/libs/mongodb";
 
-export async function POST(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
-  const { id } = context.params;
-
-  if (!ObjectId.isValid(id)) {
-    return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
-  }
-
+export async function POST(req: NextRequest) {
   try {
+    const url = new URL(req.url);
+    const id = url.pathname.split("/").pop();
+
+    if (!id || !ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
+    }
+
     const db = await connectToDB();
 
     const result = await db.db.collection("reports").updateOne(
