@@ -1,10 +1,10 @@
-import SecondSecClient from "../home-components/secondSecServer";
-import FirstSecClient from "../home-components/firstSecClient";
-import AnnouncementClient from "../home-components/AnnouncementSection";
+import SecondSecClient from "./home-components/secondSecServer";
+import FirstSecClient from "./home-components/firstSecClient";
+import AnnouncementClient from "./home-components/AnnouncementSection";
 import style from "@/styles/variable.module.scss"
-import FAQ from "../home-components/FAQS";
-import About from "../home-components/about";
-import MissionVision from "../home-components/MissionVision";
+import FAQ from "./home-components/FAQS";
+import About from "./home-components/about";
+import MissionVision from "./home-components/MissionVision";
 
 
 export default function Home() {
