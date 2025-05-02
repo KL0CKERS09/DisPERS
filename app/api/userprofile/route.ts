@@ -1,20 +1,18 @@
-import { NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import { connectToDB } from "@/libs/mongodb";
-import User from '../../../models/login';  
-import { authenticate, AuthenticatedRequest } from '../../../libs/auth';
+import User from '../../../models/login';
+import { AuthenticatedRequest } from '../../../libs/auth';
 
-export default async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
+export async function GET(req: AuthenticatedRequest) {
   await connectToDB();
 
   // Apply the authenticate middleware
-  authenticate(req, res, async () => {
-    const userId = req.userId; // Access the userId from the request after authentication
-    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+  const userId = req.userId; // Access the userId from the request after authentication
+  if (!userId) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const user = await User.findById(userId).lean();
+  const user = await User.findById(userId).lean();
 
-    if (!user) return res.status(404).json({ message: 'User not found' });
+  if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
 
-    res.json(user);
-  });
+  return NextResponse.json(user);
 }
