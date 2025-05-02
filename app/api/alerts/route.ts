@@ -3,12 +3,13 @@ import Alert from "@/models/alert";
 import { NextResponse } from "next/server";
 
 // Helper function to check if the string is a valid base64 image
-const isBase64Image = (str) => {
+const isBase64Image = (str: string): boolean => {
     const base64Regex = /^data:image\/(png|jpeg|jpg|gif);base64,/;
     return base64Regex.test(str);
 };
 
-export async function POST(req) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function POST(req: { json: () => PromiseLike<{ title: any; description: any; severity: any; location: any; status: any; img: any; }> | { title: any; description: any; severity: any; location: any; status: any; img: any; }; }) {
     try {
         const { title, description, severity, location, status, img } = await req.json();
 
