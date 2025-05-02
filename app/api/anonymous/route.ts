@@ -2,6 +2,19 @@ import { connectToDB } from '@/libs/mongodb';
 import { ObjectId } from 'mongodb';
 import { NextResponse } from 'next/server';
 
+interface Report {
+  _id: ObjectId;
+  title: string;
+  description: string;
+  type: string;
+  location: string;
+  email: string;
+  status: string;
+  imageUrl: string;
+  verified: boolean;
+  createdAt: Date;
+}
+
 export async function POST(req: Request) {
   try {
     const { db } = await connectToDB();
@@ -33,7 +46,7 @@ export async function POST(req: Request) {
       imageUrl = `/uploads/${filename}`;
     }
 
-    const report = {
+    const report: Report = {
       _id: new ObjectId(),
       title,
       description,
@@ -60,7 +73,7 @@ export async function POST(req: Request) {
 export async function GET() {
   try {
     const { db } = await connectToDB();
-    const reports = await db.collection("anonymousReport").find().sort({ createdAt: -1 }).toArray();
+    const reports: Report[] = await db.collection("anonymousReport").find().sort({ createdAt: -1 }).toArray();
 
     const formatted = reports.map((r) => ({
       id: r._id.toString(),
