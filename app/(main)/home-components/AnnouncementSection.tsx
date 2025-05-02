@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import AnnouncementModal from "./AnnouncementModal"; // We'll create this next
 
 const AnnouncementSection = () => {
@@ -39,6 +38,7 @@ const AnnouncementSection = () => {
                 <div className="card-holder border-t border-gray-300 flex justify-center">
                     <ul className="w-[90%] py-10 space-y-6">
                         {announcements.length > 0 ? (
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             announcements.map((t: any) => (
                                 <li
                                     key={t._id}

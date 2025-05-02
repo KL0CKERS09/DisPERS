@@ -20,7 +20,7 @@ type SlideContent = {
 
 export default function FirstSecClient() {
     const slideHolderRef = useRef<HTMLDivElement>(null);
-    const slidesRef = useRef<NodeListOf<HTMLDivElement>>();
+    const slidesRef = useRef<NodeListOf<HTMLDivElement>>(null);
     const currentSlide = useRef(0);
     const autoSlideInterval = useRef<NodeJS.Timeout | null>(null);
 

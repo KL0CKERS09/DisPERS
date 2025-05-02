@@ -10,7 +10,7 @@ interface FAQItem {
 
 
 export default function FAQ() {
-    const [faqs, setFaqs] = useState<FAQ[]>([]);
+    const [faqs, setFaqs] = useState<FAQItem[]>([]);
 
     useEffect(() => {
         fetch('/data/faq.json')
