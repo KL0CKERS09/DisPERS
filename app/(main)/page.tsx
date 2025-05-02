@@ -1,4 +1,4 @@
-import SecondSecClient from "./home-components/secondSecServer";
+import SecondSecClient from "./home-components/secondSecClient";
 import FirstSecClient from "./home-components/firstSecClient";
 import AnnouncementClient from "./home-components/AnnouncementSection";
 import style from "@/styles/variable.module.scss"
