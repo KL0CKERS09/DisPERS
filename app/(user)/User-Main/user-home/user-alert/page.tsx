@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,14 +7,17 @@ import style from "./alert.module.scss";
 import UserAlertModal from "./userAlertModal";
 
 // Define the Alert type
-type Alert = {
+interface Alert {
   _id: string;
   title: string;
+  severity: "HIGH" | "MEDIUM" | "LOW"; // Match enum
+  location: string;
+  status: string;
   description: string;
-  severity: "HIGH" | "MEDIUM" | "LOW";
   img: string;
   createdAt: string;
-};
+}
+
 
 export default function ActiveAlertsSection() {
   const [alerts, setAlerts] = useState<Alert[]>([]);
@@ -46,24 +51,22 @@ export default function ActiveAlertsSection() {
 
   return (
     <div className="w-[90%] min-h-screen mx-auto flex">
-      <section className="second-container w-[100%] flex justify-center ">
+      <section className="second-container w-[100%] flex justify-center">
         <div className="alert-container w-[100%] flex flex-col pl-[3em]">
           <div className="title-holder border-b border-gray-300 mb-5">
-            <h1 className="text-3xl py-10 font-bold text-gray-800">
-              Alerts
-            </h1>
+            <h1 className="text-3xl py-10 font-bold text-gray-800">Alerts</h1>
           </div>
 
           <div className="w-full">
             <ul
               className={`${style.shadowInner} alert-grid-container w-full  
-                  ${expanded ? `h-fit overflow-visible ${style.hideBefore}` : "max-h-[500px] overflow-hidden"} 
-                  ${style.resizingGrid} gap-5 transition-all duration-300 ease-in-out`}
+                ${expanded ? `h-fit overflow-visible ${style.hideBefore}` : "max-h-[500px] overflow-hidden"} 
+                ${style.resizingGrid} gap-5 transition-all duration-300 ease-in-out`}
             >
               {alerts.length > 0 ? (
                 alerts.map((t) => (
                   <li
-                    className={`${style[`li-indiv`]} bg-white grid grid-rows-2 rounded-2xl overflow-hidden hover:scale-[1.05] transition-[500ms]`}
+                    className={`${style[`li-indiv`]} max-w-[300px] bg-white grid grid-rows-2 rounded-2xl overflow-hidden hover:scale-[1.05] transition-[500ms]`}
                     key={t._id}
                   >
                     <div className="report-image-holder w-full bg-blue-400 min-h-full max-h-full overflow-hidden">
@@ -73,7 +76,6 @@ export default function ActiveAlertsSection() {
                         width={300}
                         height={200}
                         className="object-cover h-full w-full"
-                        onError={(e) => (e.target.src = 'https://via.placeholder.com/400x200')}
                       />
                     </div>
                     <div className="w-[100%] py-1 grid grid-rows-3">
@@ -113,7 +115,7 @@ export default function ActiveAlertsSection() {
                   className={`transition-transform cursor-pointer duration-300 flex flex-col items-center ${style['button']}`}
                 >
                   <Image
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABBElEQVR4nO2WOw7CQAwFcwkQnNaFny8GVRA0UHAcKKBCipLd9U/CU8fSjtZJZpqKoiiKQhFmPgG4EtF+SgYR7Zn5BuC8+jCAC4AXMz8yydBH4vE927w6ICI7APfvwBPA0eWkDWciokPXYKSM9EpkkpFRiQwyoiURKSPaEhEyYiXhKSPWEh4ybhKWMu4SFjJhEpoyphLcEI0//dPUZj2zZBmNAwcamZlNVqZlpmedxDMat8y4SljJhEhoy4RKaL7MHh8Dl5sJvQlNmTQSo2sWuk5LVDQuUNGYZc3Cb8Lipxku4RWNrlhFYwja0RiKVjSmYDQaU9EbjSlpjcbUbI3GoiiK/+INpVdbjree1BIAAAAASUVORK5CYII="
+                    src="data:image/png;base64,...yourIconData..."
                     alt="Show more"
                     width={30}
                     height={30}
@@ -137,4 +139,3 @@ export default function ActiveAlertsSection() {
     </div>
   );
 }
-

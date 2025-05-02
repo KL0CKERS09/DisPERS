@@ -13,15 +13,16 @@ const alertSchema = new Schema(
         },
         severity: {
             type: String,
+            enum: ["HIGH", "MEDIUM", "LOW"], // ✅ Add this
             required: [true, "Severity is required"],
         },
         location: {
             type: String,
-            required: [true, "Description is required"],
+            required: [true, "Location is required"],
         },
         status: {
             type: String,
-            required: [true, "Description is required"],
+            required: [true, "Status is required"],
         },
         img: {
             type: String,
@@ -32,6 +33,7 @@ const alertSchema = new Schema(
         timestamps: true,
     }
 );
+
 
 const Alert = mongoose.models.Alert || mongoose.model("Alert", alertSchema, "alerts");
 
