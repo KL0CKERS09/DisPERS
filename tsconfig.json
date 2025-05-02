@@ -13,6 +13,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "typeRoots": [
+      "node_modules/@types",  // Ensure TypeScript looks in the @types folder inside node_modules
+      "node_modules"  // If you have custom types outside node_modules, add them here
+    ],
     "plugins": [
       {
         "name": "next"
