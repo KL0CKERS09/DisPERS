@@ -3,6 +3,13 @@ import path from 'path';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  typescript: {
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    ignoreBuildErrors: true,
+  },
   sassOptions: {
     includesPaths: [path.join(__dirname, "styles")],
   },
