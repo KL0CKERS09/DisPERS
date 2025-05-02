@@ -1,7 +1,18 @@
-// app/api/admin/reportsPendingVerification/route.ts
 import { NextResponse } from 'next/server';
 import { connectToDB } from '@/libs/mongodb';
 import { ObjectId } from 'mongodb';
+
+// Define the Report type
+interface Report {
+  _id: { toString: () => string };
+  userId: string;
+  status: string;
+  title: string;
+  category: string;
+  severity: string;
+  location: string;
+  createdAt?: string;
+}
 
 export async function GET() {
   try {
@@ -9,11 +20,16 @@ export async function GET() {
     const reportsCollection = db.collection('reports');
     const usersCollection = db.collection('users');
 
-    const reports = await reportsCollection.find({}).toArray();
+    const reports: Report[] = await reportsCollection.find({}).toArray();
 
     const results = await Promise.all(
       reports.map(async (report) => {
-        const user = await usersCollection.findOne({ _id: new ObjectId(report.userId) });
+        // Ensure ObjectId is valid
+        const userId = report.userId ? new ObjectId(report.userId) : null;
+
+        // Fetch user data if userId exists
+        const user = userId ? await usersCollection.findOne({ _id: userId }) : null;
+
         return {
           id: report._id.toString(),
           status: report.status,
@@ -21,7 +37,7 @@ export async function GET() {
           category: report.category,
           severity: report.severity,
           location: report.location,
-          createdAt: report.createdAt || new Date().toISOString(),
+          createdAt: report.createdAt ? new Date(report.createdAt).toISOString() : new Date().toISOString(),
           reporter: user?.username || 'Unknown',
           user: user
             ? {
