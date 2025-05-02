@@ -1,4 +1,3 @@
-// app/api/registrations/[id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
 import { connectToDB } from '@/libs/mongodb';
@@ -38,7 +37,13 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     // Return success response
     return NextResponse.json({ message: 'Status updated successfully' });
   } catch (error) {
+    // Log the error for debugging purposes
     console.error('Error updating registration:', error);
-    return NextResponse.json({ message: 'Failed to update status' }, { status: 500 });
+
+    // Return a generic error message
+    return NextResponse.json(
+      { message: 'Failed to update status', error: error instanceof Error ? error.message : error },
+      { status: 500 }
+    );
   }
 }
