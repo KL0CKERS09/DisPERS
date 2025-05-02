@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import ReportDetailModal from './reportmodal/page';
+import ReportDetailModal from './reportmodal/reportDetailModal';
 import UserCard from '../current-user/page';
 
 interface Report {
