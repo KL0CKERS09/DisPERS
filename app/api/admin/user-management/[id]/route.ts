@@ -3,14 +3,14 @@ import { ObjectId } from 'mongodb';
 import { connectToDB } from '@/libs/mongodb';
 
 export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: { id: string } }
 ) {
-  const { id } = params;
+  const { id } = context.params;
 
   try {
     // Parse the incoming JSON body
-    const { status } = await request.json();
+    const { status } = await req.json();
 
     // Validate status
     if (!['verified', 'rejected'].includes(status)) {
