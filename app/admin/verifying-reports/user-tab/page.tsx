@@ -181,8 +181,9 @@ export default function UserTab() {
                 <div className="text-center h-[100%] md:text-left flex flex-col items-start justify-center">
                   <p className="text-lg font-semibold">{selectedReport.user?.username || 'Unknown User'}</p>
                   <p className="text-sm text-gray-500">
-                    {new Date(selectedReport.date).toLocaleString()}
+                    {new Date(selectedReport.createdAt).toLocaleString()}
                   </p>
+
                 </div>
               </div>
 
