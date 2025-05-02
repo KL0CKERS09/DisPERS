@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { connectToDB } from "@/libs/mongodb";
 
-// Update the function to match the new API route structure
+// Correct function signature for handling dynamic routes
 export async function GET(
   request: NextRequest,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } } // Destructure params correctly
 ) {
-  const { id } = context.params; // Extract the dynamic parameter
+  const { id } = params;
 
   // Validate the ID format
   if (!ObjectId.isValid(id)) {
