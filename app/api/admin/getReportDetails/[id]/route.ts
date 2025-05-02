@@ -1,13 +1,12 @@
-// app/api/admin/getReportDetails/[id]/route.ts
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import { connectToDB } from "@/libs/mongodb";
 
 export async function GET(
-  request: Request,
-  context: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: { id: string } }
 ) {
-  const id = context.params.id;
+  const id = params.id;
 
   if (!ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
@@ -24,7 +23,10 @@ export async function GET(
       return NextResponse.json({ error: "Report not found" }, { status: 404 });
     }
 
-    const user = await usersCollection.findOne({ _id: new ObjectId(report.userId) });
+    let user = null;
+    if (report.userId && ObjectId.isValid(report.userId)) {
+      user = await usersCollection.findOne({ _id: new ObjectId(report.userId) });
+    }
 
     const responseData = {
       ...report,
