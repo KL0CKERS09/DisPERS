@@ -2,6 +2,20 @@
 
 import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
+type AnonymousReport = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _id: any; // You can refine this as `ObjectId` from MongoDB if needed
+  title: string;
+  description: string;
+  type: string;
+  location: string;
+  email: string;
+  image?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  status?: string;
+};
+
 
 export default function AnonymousReport() {
   const [title, setTitle] = useState("");
@@ -9,7 +23,7 @@ export default function AnonymousReport() {
   const [type, setType] = useState("");
   const [location, setLocation] = useState("");
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState("Active");
+  const [status] = useState("Active");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [image, setImage] = useState<File | null>(null);

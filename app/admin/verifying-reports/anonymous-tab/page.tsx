@@ -59,7 +59,7 @@ export default function AnonymousTab() {
     // Date filter
     if (filterRange) {
       const now = new Date();
-      let compareDate = new Date();
+      const compareDate = new Date();
 
       switch (filterRange) {
         case '1d':

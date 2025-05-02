@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname} from 'next/navigation';
 import { Roboto } from 'next/font/google';
-import { LogOut } from 'lucide-react';
 import styles from "../styles/navbar.module.scss"
 
 const roboto = Roboto({
@@ -23,12 +22,6 @@ const navItems = [
 
 export default function NavbarAdmin() {
     const pathname = usePathname();
-    const router = useRouter();
-
-    const handleLogout = async () => {
-        await fetch('/api/logout');
-        router.push('/Login');
-    };
 
     return (
         <header className={` ${styles["main-header"]} w-full sticky top-0 bg-white shadow-md z-50`}>

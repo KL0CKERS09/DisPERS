@@ -1,7 +1,5 @@
-"use client";
-
+import { AxiosError } from "axios";
 import { useState } from "react";
-import axios from "axios";
 import { FaUser } from "react-icons/fa";
 
 export default function RegisterModal({ onClose }: { onClose: () => void }) {
@@ -19,10 +17,16 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
     role: "", // Role is empty by default
   });
 
-  const [error, setError] = useState({
+  const [error, setError] = useState<{
+    email: string;
+    phone: string;
+    username: string;
+    address: string; 
+  }>({
     email: "",
     phone: "",
     username: "",
+    address: "", 
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -31,36 +35,39 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Check if role is selected
+  
     if (form.role === "") {
       alert("Please select a role.");
       return;
     }
-
+  
     try {
-      // Reset previous error messages
       setError({
         email: "",
         phone: "",
         username: "",
+        address: "", 
       });
+  
 
-      const response = await axios.post("/api/register", form);
       alert("Registered successfully!");
       onClose();
-    } catch (err: any) {
-      // Handle errors, assuming the API returns these error types
-      if (err.response) {
-        const { email, phone, username } = err.response.data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        const { email, phone, username, address } = err.response?.data || {};
         setError({
           email: email || "",
           phone: phone || "",
           username: username || "",
+          address: address || "", // Handle address error
         });
+      } else if (err instanceof Error) {
+        console.error("Error:", err.message);
+        alert("Registration failed due to a non-API error.");
+      } else {
+        console.error("Unexpected error:", err);
+        alert("Unexpected error occurred.");
       }
-      console.error("Registration error:", err);
-      alert("Registration failed.");
     }
   };
 
@@ -72,7 +79,6 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
         </div>
         <h2 className="text-center text-xl font-bold mb-6 tracking-wider mt-4">REGISTER</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Display error for email */}
           {error.email && <div className="text-red-500 text-sm mb-2">{error.email}</div>}
           <div className="flex gap-2">
             <input
@@ -109,7 +115,6 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
             onChange={handleChange}
             className="w-full p-2 rounded-md border"
           />
-          {/* Display error for phone */}
           {error.phone && <div className="text-red-500 text-sm mb-2">{error.phone}</div>}
           <input
             name="phone"
@@ -118,7 +123,6 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
             onChange={handleChange}
             className="w-full p-2 rounded-md border"
           />
-          {/* Display error for address */}
           {error.address && <div className="text-red-500 text-sm mb-2">{error.address}</div>}
           <input
             name="address"
@@ -127,7 +131,6 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
             onChange={handleChange}
             className="w-full p-2 rounded-md border"
           />
-          {/* Display error for email */}
           {error.email && <div className="text-red-500 text-sm mb-2">{error.email}</div>}
           <input
             name="email"
@@ -137,7 +140,6 @@ export default function RegisterModal({ onClose }: { onClose: () => void }) {
             onChange={handleChange}
             className="w-full p-2 rounded-md border"
           />
-          {/* Display error for username */}
           {error.username && <div className="text-red-500 text-sm mb-2">{error.username}</div>}
           <input
             name="username"

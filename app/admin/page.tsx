@@ -88,12 +88,6 @@ function Card({ title, value, color }: { title: string; value: string; color: st
   );
 }
 
-function Tag({ text, color }: { text: string; color: string }) {
-  return (
-    <span className={`${color} text-xs px-2 py-1 rounded-md`}>{text}</span>
-  );
-}
-
 function ButtonTab({ text, active, onClick }: { text: string; active?: boolean; onClick: () => void }) {
   return (
     <button

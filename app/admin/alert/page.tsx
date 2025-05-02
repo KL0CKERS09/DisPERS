@@ -108,8 +108,8 @@ export default function AlertsPage() {
   };
 
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; // use optional chaining for safety
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -121,6 +121,7 @@ export default function AlertsPage() {
       reader.readAsDataURL(file);
     }
   };
+  
 
   return (
     <section className="w-full flex flex-col items-center p-8 space-y-6">
