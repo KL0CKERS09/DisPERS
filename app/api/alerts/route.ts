@@ -8,11 +8,22 @@ const isBase64Image = (str: string): boolean => {
     return base64Regex.test(str);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function POST(req: { json: () => PromiseLike<{ title: any; description: any; severity: any; location: any; status: any; img: any; }> | { title: any; description: any; severity: any; location: any; status: any; img: any; }; }) {
-    try {
-        const { title, description, severity, location, status, img } = await req.json();
+// Define a type for the incoming request body
+interface AlertRequestBody {
+    title: string;
+    description: string;
+    severity: string;
+    location: string;
+    status: string;
+    img: string;
+}
 
+export async function POST(req: Request) {
+    try {
+        // Parse the request body and cast it to AlertRequestBody type
+        const { title, description, severity, location, status, img }: AlertRequestBody = await req.json();
+
+        // Validate image
         if (!img || !isBase64Image(img)) {
             return new Response('Valid base64 image string is required', { status: 400 });
         }
@@ -38,7 +49,7 @@ export async function POST(req: { json: () => PromiseLike<{ title: any; descript
 }
 
 export async function GET() {
-    await connectToDB(); 
+    await connectToDB();
     const alerts = await Alert.find();
     return NextResponse.json({ alerts });
 }
