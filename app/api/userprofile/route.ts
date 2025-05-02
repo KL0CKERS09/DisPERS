@@ -1,4 +1,3 @@
-// pages/api/user/profile.ts
 import { NextApiResponse } from 'next';
 import { connectToDB } from "@/libs/mongodb";
 import User from '../../../models/login';  
