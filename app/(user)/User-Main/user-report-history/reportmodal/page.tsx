@@ -19,14 +19,18 @@ interface ReportDetailModalProps {
 export default function ReportDetailModal({ isOpen, onClose, report }: ReportDetailModalProps) {
   if (!isOpen) return null;
 
-  const imageSrc =
-    report.image && report.image.startsWith('data:image/')
-      ? report.image
-      : report.image
-      ? `data:image/jpeg;base64,${report.image}`
-      : null;
+  // Handling the image correctly, if it's a base64 image or an image URL.
+  const imageSrc = report.image && report.image.startsWith('data:image/')
+    ? report.image
+    : report.image
+    ? `data:image/jpeg;base64,${report.image}`
+    : null;
+
+  // Formatting the date string once.
+  const formattedDate = new Date(report.date).toLocaleString();
+
   return (
-    <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50 ">
+    <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg shadow-lg w-fit min-w-md overflow-hidden scale-[.8]">
         <div className="bg-blue-800 text-white text-lg font-semibold p-4 rounded-t-lg">
           Report Details
@@ -43,10 +47,10 @@ export default function ReportDetailModal({ isOpen, onClose, report }: ReportDet
             </div>
           )}
           <DetailRow label="Title" value={report.title} />
-          <DetailRow label="Title" value={report.description} />
+          <DetailRow label="Description" value={report.description} />
           <DetailRow label="Type" value={report.type} />
           <DetailRow label="Location" value={report.location} />
-          <DetailRow label="Date" value={new Date(report.date).toLocaleString()} />
+          <DetailRow label="Date" value={formattedDate} />
           <DetailRow
             label="Status"
             value={report.status}
