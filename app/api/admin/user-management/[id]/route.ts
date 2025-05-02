@@ -2,18 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
 import { connectToDB } from '@/libs/mongodb';
 
-interface Params {
-  params: {
-    id: string;
-  };
-}
-
-export async function PATCH(req: NextRequest, { params }: Params) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const { id } = params;
 
   try {
     // Parse the incoming JSON body
-    const { status } = await req.json();
+    const { status } = await request.json();
 
     // Validate status
     if (!['verified', 'rejected'].includes(status)) {
