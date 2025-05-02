@@ -76,7 +76,8 @@ export default function ReportHistory() {
                                 {reports.length > 0 ? (
                                     reports.map((report, index) => (
                                         <tr key={report.id} className="h-[2em] text-gray-700">
-                                            <td className="w-[3em] px-2 py-1 border-r border-gray-200 overflow-hidden truncate" title={index + 1}>
+                                            <td className="w-[3em] px-2 py-1 border-r border-gray-200 overflow-hidden truncate" title={(index + 1).toString()}
+                                            >
                                                 {index + 1}
                                             </td>
                                             <td className="w-[6em] px-2 py-1 border-r border-gray-200 overflow-hidden truncate" title={report.title}>

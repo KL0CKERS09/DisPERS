@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import style from './styles/alert.module.scss';
-import AddAlertForm from './addAlert/page';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+
 interface Alert {
   _id?: string;
   title: string;
@@ -16,13 +16,19 @@ interface Alert {
   createdAt?: string;
 }
 
-export default function AlertsPage() {
+
+interface AddAlertFormProps {
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const AddAlertForm: React.FC<AddAlertFormProps> = ({ onClose, onSuccess }) => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [expanded, setExpanded] = useState(false);
   const [modalMode, setModalMode] = useState<'view' | 'edit' | null>(null);
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null);
   const [addModalOpen, setAddModalOpen] = useState(false);
-
 
   const [updatedAlert, setUpdatedAlert] = useState<Alert>({
     title: '',
@@ -39,7 +45,6 @@ export default function AlertsPage() {
       .then((data) => setAlerts([...data.alerts].reverse())) // Show newest first
       .catch(console.error);
   }, []);
-
 
   const openViewModal = (alert: Alert) => {
     setSelectedAlert(alert);
@@ -79,16 +84,13 @@ export default function AlertsPage() {
   const handleEditAlert = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const alertToUpdate = { ...updatedAlert, status: updatedAlert.status };
+    const alertToUpdate = { ...updatedAlert };
 
     try {
       const res = await fetch(`/api/alerts/${alertToUpdate._id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          status: alertToUpdate.status,
-          img: alertToUpdate.img,
-        }),
+        body: JSON.stringify(alertToUpdate), // Send all fields
       });
 
       if (!res.ok) throw new Error('Failed to update alert');
@@ -107,9 +109,8 @@ export default function AlertsPage() {
     }
   };
 
-
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]; // use optional chaining for safety
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -121,7 +122,6 @@ export default function AlertsPage() {
       reader.readAsDataURL(file);
     }
   };
-  
 
   return (
     <section className="w-full flex flex-col items-center p-8 space-y-6">
@@ -179,7 +179,9 @@ export default function AlertsPage() {
                 <h1 className="text-black/70 text-xl font-bold min-h-[3em] flex items-center">
                   {alert.title}
                 </h1>
-                <p className="text-black/70 text-xs min-h-[2em] max-h-[2em] overflow-hidden">{alert.description}</p>
+                <p className="text-black/70 text-xs min-h-[2em] max-h-[2em] overflow-hidden">
+                  {alert.description}
+                </p>
                 <hr className="w-full text-black/30 my-2" />
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-black/40">{new Date(alert.createdAt!).toLocaleDateString()}</span>
@@ -198,7 +200,6 @@ export default function AlertsPage() {
           onClick={() => setExpanded(!expanded)}
           className={`transition-transform duration-300 flex flex-col items-center ${style.button}`}
         >
-          {/* Font Awesome Arrow Icon */}
           {expanded ? (
             <FaChevronUp className={`transition-transform duration-300 ${style.expandBtn}`} size={30} />
           ) : (
@@ -300,10 +301,12 @@ export default function AlertsPage() {
           </div>
         </div>
       )}
+
       {addModalOpen && (
         <div className="fixed inset-0 bg-black/30 bg-opacity-50 flex items-center justify-center z-1050 px-4">
           <div className="bg-white rounded-xl w-full max-w-[50em] p-6 space-y-4">
             <button className="ml-auto text-gray-500 hover:text-gray-800" onClick={() => setAddModalOpen(false)}>✕</button>
+
             <AddAlertForm
               onClose={() => setAddModalOpen(false)}
               onSuccess={() => {
@@ -315,8 +318,9 @@ export default function AlertsPage() {
           </div>
         </div>
       )}
-
     </section>
-
   );
-}
+
+};
+
+export default AddAlertForm;
