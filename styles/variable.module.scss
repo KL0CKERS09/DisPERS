@@ -37,7 +37,7 @@ $font-blue : #4E709D;
 .li {
     position: relative;
 }
-.li::before {
+li::before {
     content: "";
     width:0;
     transition: 400ms ease-in-out;
