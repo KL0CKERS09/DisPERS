@@ -8,7 +8,6 @@ const anonymousReportSchema = new Schema(
     location: { type: String, required: true },
     email: { type: String },
     image: { type: String },
-    status: { type: String },
   },
   { timestamps: true }
 );

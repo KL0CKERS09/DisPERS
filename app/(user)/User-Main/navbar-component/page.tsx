@@ -40,7 +40,7 @@ export default function NavbarUser() {
                                 className=""
                             />
                             <Link href="/User-Main" className="flex flex-col">
-                                <span className={`${styles.logoTitle} ${roboto.variable} font-bold text-3xl`}>DisPERS</span>
+                                <span className={`${styles.logoTitle} ${roboto.variable} font-bold text-3xl`}>SAFENET</span>
                                 <span className={`${styles.logoSubTitle} text-white`}>BARANGGAY BAGONG SILANGAN ALERT SYSTEM</span>
                             </Link>
                         </div>
@@ -56,33 +56,33 @@ export default function NavbarUser() {
                 <div className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transition-transform ${menuOpen ? 'translate-x-0' : 'translate-x-full'} duration-300 z-50`}>
                     <div className="h-16 py-12 flex items-center justify-between p-4 border-b">
                         <h2 className="text-lg font-bold text-red-600">Menu</h2>
-                        <button onClick={() => setMenuOpen(false)} className="text-gray-700 cursor-pointer">
+                        <button onClick={() => setMenuOpen(false)} className="text-gray-700">
                             <X size={24} />
                         </button>
                     </div>
 
                     <div className="flex flex-col p-4 space-y-4">
-                        <Link href="/User-Main" className="flex items-center space-x-3 text-gray-700 hover:text-red-600 cursor-pointer">
+                        <Link href="/User-Main" className="flex items-center space-x-3 text-gray-700 hover:text-red-600">
                             <Home size={20} />
                             <span>Home</span>
                         </Link>
-                        <Link href="/User-Main/user-report-history" className="flex items-center space-x-3 text-gray-700 hover:text-red-600 cursor-pointer">
+                        <Link href="/User-Main/user-report-history" className="flex items-center space-x-3 text-gray-700 hover:text-red-600">
                             <Clock size={20} />
                             <span>Report History</span>
                         </Link>
-                        <Link href="/User-Main/evacuation" className="flex items-center space-x-3 text-gray-700 hover:text-red-600 cursor-pointer">
+                        <Link href="/User-Main/evacuation" className="flex items-center space-x-3 text-gray-700 hover:text-red-600">
                             <MapPin size={20} />
                             <span>Evacuation Area</span>
                         </Link>
-                        <Link href="/User-Main/profile-account" className="flex items-center space-x-3 text-gray-700 hover:text-red-600 cursor-pointer">
+                        <Link href="/User-Main/profile-account" className="flex items-center space-x-3 text-gray-700 hover:text-red-600">
                             <Settings size={20} />
                             <span>Account Settings</span>
                         </Link>
-                        <Link href="/User-Main/user-about" className="flex items-center space-x-3 text-gray-700 hover:text-red-600 cursor-pointer">
+                        <Link href="/User-Main/user-about" className="flex items-center space-x-3 text-gray-700 hover:text-red-600">
                             <Users size={20} />
                             <span>About Us</span>
                         </Link>
-                        <button onClick={handleLogout} className="flex items-center space-x-3 text-gray-700 hover:text-red-600 cursor-pointer">
+                        <button onClick={handleLogout} className="flex items-center space-x-3 text-gray-700 hover:text-red-600">
                             <LogOut size={20} />
                             <span>Logout</span>
                         </button>

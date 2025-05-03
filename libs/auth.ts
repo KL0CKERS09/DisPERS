@@ -1,29 +1,20 @@
-import { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
+import { NextApiRequest, NextApiResponse } from "next";
 
-// Interface for the decoded JWT payload
-interface DecodedToken {
-  userId: string;
-  // You can add other fields that may be present in your token
+export interface AuthenticatedRequest extends NextApiRequest {
+  userId?: string;
 }
 
-export async function authenticate(req: NextRequest): Promise<string | null> {
-  // Get the JWT token from the Authorization header
-  const token = req.headers.get('Authorization')?.split(' ')[1]; // 'Bearer <token>'
+export const authenticate = (req: AuthenticatedRequest, res: NextApiResponse, next: () => void) => {
+  const token = req.cookies.authToken;
 
-  if (!token) {
-    return null; // Return null if the token is not found
-  }
+  if (!token) return res.status(401).json({ message: "No token provided" });
 
   try {
-    // Verify the token and decode it
-    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as DecodedToken;
-
-    // Return the userId if the token is valid
-    return decoded.userId;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
+    req.userId = decoded.userId;
+    next();
   } catch (err) {
-    // Log the error for debugging purposes
-    console.error('Token verification failed:', err);
-    return null; // Return null if the token is invalid or expired
+    return res.status(403).json({ message: "Invalid token" });
   }
-}
+};

@@ -20,7 +20,6 @@ export default function Profile() {
   const [originalUser, setOriginalUser] = useState<UserProfile | null>(null);
   const [editing, setEditing] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [formErrors, setFormErrors] = useState<any>({});
   const [tab, setTab] = useState<"info" | "password">("info");
 
@@ -33,7 +32,6 @@ export default function Profile() {
   const [showPasswordCurrent, setShowPasswordCurrent] = useState(false);
   const [showPasswordNew, setShowPasswordNew] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -52,18 +50,18 @@ export default function Profile() {
   const handleSave = async () => {
     if (user && validateForm()) {
       await axios.put("/api/profile", user);
-
+  
       if (imagePreview && imagePreview !== originalUser?.profilePicture) {
         await axios.post("/api/profile/picture", {
           profilePicture: imagePreview,
         });
       }
-
+  
       setOriginalUser(user);
       setEditing(false);
-      setShowSuccessModal(true);
     }
   };
+  
 
   const handlePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -100,7 +98,6 @@ export default function Profile() {
         setPasswordChangeError("Current password is incorrect.");
         return;
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setPasswordChangeError("Error verifying current password. Please try again.");
       return;
@@ -113,20 +110,18 @@ export default function Profile() {
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       setPasswordChangeError("Error changing password. Please try again.");
     }
   };
 
   const validateForm = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const errors: any = {};
     if (!user?.firstName) errors.firstName = "First name is required.";
     if (!user?.lastName) errors.lastName = "Last name is required.";
     if (!user?.email || !/\S+@\S+\.\S+/.test(user.email)) errors.email = "Invalid email.";
-    if (!user?.phone || !/^\d{11}$/.test(user.phone)) errors.phone = "Phone number must be 11 digits.";
-    if (!user?.age || user.age < 16) errors.age = "Age must be at least 16.";
+    if (!user?.phone || !/^\d{10}$/.test(user.phone)) errors.phone = "Phone number must be 10 digits.";
+    if (!user?.age || user.age < 18) errors.age = "Age must be at least 18.";
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -140,7 +135,6 @@ export default function Profile() {
     username: "Username",
   };
 
-  
   const hasUserChanges = JSON.stringify(user) !== JSON.stringify(originalUser);
   const canSave = editing && hasUserChanges;
   const canChangePassword =
@@ -178,7 +172,7 @@ export default function Profile() {
             <p>{user.role}</p>
           </div>
 
-          <div className="w-[80%] min-h-[5em] flex items-center">
+          <div className="w-[80%]">
             <div className="flex gap-2 items-center">
               <img src="https://img.icons8.com/ios/50/licence.png" width="20" height="20" alt="" />
               <h1>Joined</h1>
@@ -188,7 +182,7 @@ export default function Profile() {
         </div>
 
         {/* Right: Tab Content */}
-        <div className="md:w-2/3 pt-10 px-10 bg-white rounded-2xl shadow-2xl min-h-fit py-4">
+        <div className="md:w-2/3 pt-10 px-10 bg-white rounded-2xl shadow-2xl">
           <div className="mb-4 flex space-x-4">
             <button
               className={`px-4 py-2 rounded ${tab === "info" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
@@ -214,7 +208,6 @@ export default function Profile() {
                     </label>
                     <input
                       name={field}
-                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       value={(user as any)[field]}
                       onChange={handleChange}
                       className={`w-full border p-2 rounded ${editing ? "bg-white" : "bg-gray-100"}`}
@@ -337,21 +330,6 @@ export default function Profile() {
               </button>
             </div>
           )}
-          {showSuccessModal && (
-            <div className="fixed inset-0 bg-black/30 bg-opacity-50 flex justify-center items-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-xl text-center">
-                <h2 className="text-2xl font-semibold mb-4">Success!</h2>
-                <p>Your profile has been updated successfully.</p>
-                <button
-                  onClick={() => setShowSuccessModal(false)}
-                  className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          )}
-
         </div>
       </div>
     </div>

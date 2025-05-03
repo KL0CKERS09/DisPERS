@@ -1,19 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
+// pages/api/user/profile.ts  
+import { NextApiRequest, NextApiResponse } from 'next';  
 import { connectToDB } from "@/libs/mongodb";
-import User from '../../../models/login';
-import { authenticate } from '../../../libs/auth';
+import User from '../../../models/login';  
+import { authenticate } from '../../../libs/auth';  
 
-export async function GET(req: NextRequest) {
-  // Apply the authenticate middleware to get user info
-  const userId = await authenticate(req);  // Assume `authenticate` is updated to return the userId
-  
-  if (!userId) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {  
+  await connectToDB();  
 
-  await connectToDB();
+  const token = req.headers.authorization?.split(' ')[1];  
+  if (!token) return res.status(401).json({ message: 'Unauthorized' });  
 
-  const user = await User.findById(userId).lean();
+  try {  
+    const userId = authenticate(token).userId;  
+    const user = await User.findById(userId).lean();  
 
-  if (!user) return NextResponse.json({ message: 'User not found' }, { status: 404 });
+    if (!user) return res.status(404).json({ message: 'User not found' });  
 
-  return NextResponse.json(user);
+    res.json(user);  
+  } catch (error) {  
+    res.status(401).json({ message: 'Invalid token' });  
+  }  
 }

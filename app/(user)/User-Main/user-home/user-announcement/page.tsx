@@ -1,4 +1,5 @@
-import AnnouncementSection from "@/app/(main)/home-components/AnnouncementSection";
+import AnnouncementSection from "@/app/home-components/AnnouncementSection";
+import Link from "next/link";
 
 
 

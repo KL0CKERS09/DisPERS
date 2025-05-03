@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import ReportDetailModal from './reportmodal/reportDetailModal';
+import ReportDetailModal from './reportmodal/page';
 import UserCard from '../current-user/page';
 
 interface Report {
@@ -76,8 +76,7 @@ export default function ReportHistory() {
                                 {reports.length > 0 ? (
                                     reports.map((report, index) => (
                                         <tr key={report.id} className="h-[2em] text-gray-700">
-                                            <td className="w-[3em] px-2 py-1 border-r border-gray-200 overflow-hidden truncate" title={(index + 1).toString()}
-                                            >
+                                            <td className="w-[3em] px-2 py-1 border-r border-gray-200 overflow-hidden truncate" title={index + 1}>
                                                 {index + 1}
                                             </td>
                                             <td className="w-[6em] px-2 py-1 border-r border-gray-200 overflow-hidden truncate" title={report.title}>

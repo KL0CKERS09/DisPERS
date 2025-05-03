@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import Image from 'next/image';
 
 type UserProfile = {
   _id: string;
   email: string;
   username: string;
-  profilePicture: string;
+  profilePicture: string; 
 };
 
 export default function ProfilePage() {
@@ -34,41 +34,38 @@ export default function ProfilePage() {
         setLoading(false);
       }
     };
-
+  
     fetchProfile();
   }, [router]);
-
+  
 
   if (loading) return <div>Loading profile...</div>;
   if (!user) return null;
 
   return (
     <div className="w-full h-fit py-5 bg-[#ccb]">
-      <div className="w-[80%] mx-auto ">
-        <Link href={'/User-Main/profile-account'}>
-          <div className='flex justify-end items-center gap-4'>
-            <div className="w-16 h-16 relative rounded-full overflow-hidden border">
-              {user.profilePicture && user.profilePicture.startsWith('data:image') ? (
-                <img
-                  src={user.profilePicture}
-                  alt="Profile Picture"
-                  sizes="64px"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm">
-                  No Image
-                </div>
-              )}
-
+      <div className="w-[80%] mx-auto flex justify-end items-center gap-4">
+        <div className="w-16 h-16 relative rounded-full overflow-hidden border">
+          {user.profilePicture && user.profilePicture.startsWith('data:image') ? (
+            <img
+              src={user.profilePicture}
+              alt="Profile Picture"
+              fill
+              sizes="64px"
+              className="object-cover"
+              unoptimized 
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-300 flex items-center justify-center text-sm">
+              No Image
             </div>
-            <div className="flex flex-col">
-              <p className="font-bold">{user.username}</p>
-              <p className="text-xs">{user.email}</p>
-            </div>
-          </div>
-        </Link>
+          )}
+        </div>
+        <div className="flex flex-col">
+          <p className="font-bold">{user.username}</p>
+          <p className="text-xs">{user.email}</p>
+        </div>
       </div>
-    </div >
+    </div>
   );
 }

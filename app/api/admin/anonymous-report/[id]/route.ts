@@ -11,20 +11,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid ID format' }, { status: 400 });
     }
 
+    const { status } = await req.json();
+
+    if (!['Active', 'Resolved'].includes(status)) {
+      return NextResponse.json({ error: 'Invalid status value' }, { status: 400 });
+    }
+
     const { db } = await connectToDB();
 
     const result = await db.collection('anonymousReport').updateOne(
       { _id: new ObjectId(id) },
-      { $set: { status: 'Resolved' } }
+      { $set: { status } }
     );
 
     if (result.matchedCount === 0) {
       return NextResponse.json({ error: 'Report not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Report verified successfully' });
+    return NextResponse.json({ message: 'Report updated successfully' });
   } catch (error) {
-    console.error('Verification error:', error);
+    console.error('Update error:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }

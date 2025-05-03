@@ -3,27 +3,15 @@ import Alert from "@/models/alert";
 import { NextResponse } from "next/server";
 
 // Helper function to check if the string is a valid base64 image
-const isBase64Image = (str: string): boolean => {
+const isBase64Image = (str) => {
     const base64Regex = /^data:image\/(png|jpeg|jpg|gif);base64,/;
     return base64Regex.test(str);
 };
 
-// Define a type for the incoming request body
-interface AlertRequestBody {
-    title: string;
-    description: string;
-    severity: string;
-    location: string;
-    status: string;
-    img: string;
-}
-
-export async function POST(req: Request) {
+export async function POST(req) {
     try {
-        // Parse the request body and cast it to AlertRequestBody type
-        const { title, description, severity, location, status, img }: AlertRequestBody = await req.json();
+        const { title, description, severity, location, status, img } = await req.json();
 
-        // Validate image
         if (!img || !isBase64Image(img)) {
             return new Response('Valid base64 image string is required', { status: 400 });
         }
@@ -49,7 +37,7 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-    await connectToDB();
+    await connectToDB(); 
     const alerts = await Alert.find();
     return NextResponse.json({ alerts });
 }

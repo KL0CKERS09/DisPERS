@@ -3,25 +3,14 @@
 import React from 'react';
 import Image from 'next/image';
 
-interface Alert {
-  _id: string;
-  title: string;
-  description: string;
-  severity: 'HIGH' | 'MEDIUM' | 'LOW';
-  img: string;
-  createdAt: string;
-  location?: string;
-  status?: string;
-}
-
 interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
-  alert: Alert | null;
+  alert: any;
 }
 
 export default function UserAlertModal({ isOpen, onClose, alert }: AlertModalProps) {
-  if (!isOpen || !alert) return null;
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-1000 flex items-center justify-center bg-black/50">
@@ -33,7 +22,7 @@ export default function UserAlertModal({ isOpen, onClose, alert }: AlertModalPro
           &times;
         </button>
 
-        <div className="text-red-500 font-semibold text-sm mb-2">ALERT</div>
+        <div className="text-red-500 font-semibold text-sm mb-2"> ALERT</div>
         <h2 className="text-2xl font-bold mb-4">{alert.title || 'Flash Flood Warning'}</h2>
 
         <div className="w-full h-40 bg-gray-300 mb-4 rounded">
@@ -50,20 +39,14 @@ export default function UserAlertModal({ isOpen, onClose, alert }: AlertModalPro
           <strong className="text-red-400">Severity Level</strong>
           <p className="text-sm text-gray-300">{alert.severity}</p>
         </div>
-
-        {alert.location && (
-          <div className="mb-2">
-            <strong className="text-yellow-400">Location</strong>
-            <p className="text-sm text-gray-300">{alert.location}</p>
-          </div>
-        )}
-
-        {alert.status && (
-          <div className="mb-2">
-            <strong className="text-blue-400">Current Status</strong>
-            <p className="text-sm text-gray-300">{alert.status}</p>
-          </div>
-        )}
+        <div className="mb-2">
+          <strong className="text-yellow-400">Location</strong>
+          <p className="text-sm text-gray-300">{alert.location || 'Main Street and surrounding areas'}</p>
+        </div>
+        <div className="mb-2">
+          <strong className="text-blue-400">Current Status</strong>
+          <p className="text-sm text-gray-300">{alert.status}</p>
+        </div>
 
         <div className="bg-[#2b2b2b] p-3 rounded-md mt-4 text-sm">
           <strong className="block mb-2 text-white">Description</strong>
@@ -73,7 +56,7 @@ export default function UserAlertModal({ isOpen, onClose, alert }: AlertModalPro
         </div>
 
         <div className="text-xs text-gray-500 mt-4 flex justify-between">
-          <span>{new Date(alert.createdAt).toLocaleString()}</span>
+          <span>{alert.createdAt}</span>
           <a href={`/`} className="text-blue-400 hover:underline">Emergency Contact: 911</a>
         </div>
       </div>
